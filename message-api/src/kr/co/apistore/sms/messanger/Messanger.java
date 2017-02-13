@@ -3,10 +3,6 @@
  */
 package kr.co.apistore.sms.messanger;
 
-import java.util.HashMap;
-
-import kr.co.apistore.sms.message.Message;
-
 /**
  * @author Gaeul Lee
  *
