@@ -77,7 +77,7 @@ public class MessageBody {
 
 	public Receipt send() {
 		// url -> http://api.openapi.io/ppurio/version/message/{sms/lms/mms}/id;
-		String url = "http://api.openapi.io/ppurio/version/message/{sms/lms/mms}/id";
+		String url = "http://api.openapi.io/ppurio/1/message/lms/"+ MessageConstants.USER_ID;
 		HttpResponse res = null;
 		try {
 			res = (HttpResponse) Unirest.post(url).header("x-waple-authorization", MessageConstants.KEY) // 1.key
