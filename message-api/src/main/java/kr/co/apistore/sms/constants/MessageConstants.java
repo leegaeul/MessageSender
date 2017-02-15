@@ -12,5 +12,6 @@ public class MessageConstants {
 	public final static String	CONTENT_TYPE	= "application/x-www-form-urlencoded;charset=UTF-8";
 	public final static String	VERSION			= "1";
 	public final static String	USER_ID			= "vodshop";
+	public final static String	TIME_FORMAT		= "yyyy-MM-dd HH:mm:ss";
 	public final static String	SEND_PHONE		= "15885668";
 }

@@ -14,7 +14,8 @@ public class Message {
 	private String	subject;
 	private String	senderPhone;
 	private String	senderName;
-	private Date	sendTime;
+	private String	sendTime;
+	private String	destPhone;
 
 	/**
 	 * @return the content
@@ -75,15 +76,29 @@ public class Message {
 	/**
 	 * @return the sendTime
 	 */
-	public Date getSendTime() {
+	public String getSendTime() {
 		return sendTime;
 	}
 
 	/**
 	 * @param sendTime the sendTime to set
 	 */
-	public void setSendTime(Date sendTime) {
+	public void setSendTime(String sendTime) {
 		this.sendTime = sendTime;
+	}
+
+	/**
+	 * @return the destPhone
+	 */
+	public String getDestPhone() {
+		return destPhone;
+	}
+
+	/**
+	 * @param destPhone the destPhone to set
+	 */
+	public void setDestPhone(String destPhone) {
+		this.destPhone = destPhone;
 	}
 
 }

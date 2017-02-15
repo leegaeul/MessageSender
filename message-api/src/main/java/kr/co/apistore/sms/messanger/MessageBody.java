@@ -3,6 +3,9 @@
  */
 package kr.co.apistore.sms.messanger;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -14,6 +17,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import kr.co.apistore.sms.constants.MessageConstants;
 import kr.co.apistore.sms.main.Receipt;
 import kr.co.apistore.sms.message.Message;
+import kr.co.apistore.sms.sender.MessageSender;
 
 /**
  * @author Gaeul Lee
@@ -22,10 +26,12 @@ import kr.co.apistore.sms.message.Message;
 public class MessageBody {
 	private Message					m;
 	private HashMap<String, String>	receivers;
+	private SimpleDateFormat		format;
 
 	public MessageBody() {
 		m = new Message();
 		receivers = new HashMap<>();
+		format = new SimpleDateFormat(MessageConstants.TIME_FORMAT);
 	}
 
 	/**
@@ -65,6 +71,44 @@ public class MessageBody {
 		return this;
 	}
 
+	/**
+	 * 
+	 * @throws ParseException
+	 * @Method when
+	 * @Author Gaeul Lee
+	 * @Date 2017. 2. 15.
+	 */
+	public MessageBody when(String sendTime) {
+		try {
+			/*
+			 * yyyy-MM-dd HH:mm:ss 형태에 맞는지 확인.
+			 */
+
+			Date date = format.parse(sendTime);
+		}
+		catch (ParseException e) {
+			e.printStackTrace();
+		}
+		m.setSendTime(sendTime);
+		return this;
+	}
+
+	/**
+	 * 
+	 * 
+	 * @Method when
+	 * @Author Gaeul Lee
+	 * @Date 2017. 2. 15.
+	 */
+	public MessageBody when(Date date) {
+		/*
+		 * yyyy-MM-dd HH:mm:ss 형태로 변환
+		 */
+		String sendTime = format.format(date);
+		m.setSendTime(sendTime);
+		return this;
+	}
+
 	private String getDestPhone() {
 		String destPhone = "";
 		Set key = receivers.keySet();
@@ -76,49 +120,26 @@ public class MessageBody {
 	}
 
 	public Receipt send() {
-		// url -> http://api.openapi.io/ppurio/version/message/{sms/lms/mms}/id;
-		String url = "http://api.openapi.io/ppurio/1/message/lms/"+ MessageConstants.USER_ID;
-		HttpResponse res = null;
-		try {
-			res = (HttpResponse) Unirest.post(url).header("x-waple-authorization", MessageConstants.KEY) // 1.key
-					.header("Content-Type", MessageConstants.CONTENT_TYPE) // 2.content-type
-					.field("send_time", m.getSendTime()) // 3.send_time
-					.field("dest_phone", getDestPhone()) // 4.dest_phone
-					.field("send_phone", m.getSenderPhone())// 6.send_phone
-					.field("msg_body", m.getContent())// 8.body
-					.field("subject", m.getSubject())// 9.subject
-					.asJson();
-		}
-		catch (UnirestException e) {
-			e.printStackTrace();
-		}
-		return inssuRecept(res);
+		return inssuRecept(MessageSender.send(m));
 	}
 
 	/**
+	 * 수신번호 별 전송 영수증 발부
 	 * 
 	 * @Method inssuRecept
 	 * @Author Gaeul Lee
 	 * @Date 2017. 2. 13.
 	 */
 	private Receipt inssuRecept(HttpResponse res) {
-		Receipt receipt = new Receipt();
 		/*
-		 * 수신번호 별 전송 영수증 발부
+		 * 
 		 */
+		Receipt receipt = new Receipt();
 		return receipt;
 	}
 
 	public void report(Receipt receipt) {
-		String cmid = receipt.getCmid();
-		// url -> http://api.openapi.io/ppurio/version/message/report/id;
-		String url = " http://api.openapi.io/ppurio/version/message/report/id";
-		try {
-			HttpResponse res = Unirest.get(url).header("x-waple-authorization", MessageConstants.KEY)
-					.queryString("cmid", cmid).asJson();
-		}
-		catch (UnirestException e) {
-			e.printStackTrace();
-		}
+		MessageSender.report(null);
 	}
+
 }
