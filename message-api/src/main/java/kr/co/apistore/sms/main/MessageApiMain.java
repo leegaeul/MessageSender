@@ -19,7 +19,11 @@ public class MessageApiMain {
 	 */
 	public static void main(String[] args) {
 		// Receipt receipt = Messanger.message("message", "subject").from("15885668", "gaeul").to("01087685300", "gaeul").when("2017-02-16 18:03:00").send();
-		Receipt receipt = Messanger.message("message", "subject").from("15885668", "gaeul").to("01087685300", "gaeul").send();
+		Receipt receipt = Messanger
+				.message("message", "subject")
+				.from("15885668", "gaeul")
+				.to("01087685300", "gaeul")
+				.send();
 	}
 
 }

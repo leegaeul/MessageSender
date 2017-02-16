@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.json.JSONObject;
+
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -123,18 +125,18 @@ public class MessageBody {
 		/*
 		 * 보내기 전에 메세지 파라미터 점검
 		 */
-	
+
 		/* 전송예약시간 */
 		if (m.getSendTime() == null) m.setSendTime("");
-	
+
 		/* 발신자번호 유효성 */
 		if (m.getSenderPhone() == null || m.getSenderPhone().isEmpty()) throw new NullPointerException();
-	
+
 		/* 수신자번호 존재유무, 없으면 null exception */
 		int totalReceivers = receivers.size();
 		if (totalReceivers > 0) m.setDestPhone(getDestPhone());
 		else throw new NullPointerException();
-	
+
 		return inssuRecept(MessageSender.send(m));
 	}
 
@@ -153,10 +155,8 @@ public class MessageBody {
 	 * @Date 2017. 2. 13.
 	 */
 	private Receipt inssuRecept(HttpResponse res) {
-		/*
-		 * 
-		 */
 		Receipt receipt = new Receipt();
+		JSONObject jResult = new JSONObject(res.getBody().toString());
 		return receipt;
 	}
 
