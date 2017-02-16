@@ -120,8 +120,30 @@ public class MessageBody {
 	}
 
 	public Receipt send() {
+		/*
+		 * 보내기 전에 메세지 파라미터 점검
+		 */
+	
+		/* 전송예약시간 */
+		if (m.getSendTime() == null) m.setSendTime("");
+	
+		/* 발신자번호 유효성 */
+		if (m.getSenderPhone() == null || m.getSenderPhone().isEmpty()) throw new NullPointerException();
+	
+		/* 수신자번호 존재유무, 없으면 null exception */
+		int totalReceivers = receivers.size();
+		if (totalReceivers > 0) m.setDestPhone(getDestPhone());
+		else throw new NullPointerException();
+	
 		return inssuRecept(MessageSender.send(m));
 	}
+
+	/**
+	 * 
+	 * @Method beforeSend
+	 * @Author Gaeul Lee
+	 * @Date 2017. 2. 16.
+	 */
 
 	/**
 	 * 수신번호 별 전송 영수증 발부
