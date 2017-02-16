@@ -24,6 +24,7 @@ public class MessageApiMain {
 				.from("15885668", "gaeul")
 				.to("01087685300", "gaeul")
 				.send();
+		Messanger.report(receipt);
 	}
 
 }

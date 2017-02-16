@@ -13,8 +13,6 @@ import java.util.Set;
 import org.json.JSONObject;
 
 import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 import kr.co.apistore.sms.constants.MessageConstants;
 import kr.co.apistore.sms.main.Receipt;
@@ -156,12 +154,19 @@ public class MessageBody {
 	 */
 	private Receipt inssuRecept(HttpResponse res) {
 		Receipt receipt = new Receipt();
-		JSONObject jResult = new JSONObject(res.getBody().toString());
+		JSONObject j = new JSONObject(res.getBody().toString());
+		receipt.setResultCode((String) j.get("result_code"));
+		receipt.setResultMessage((String) j.get("result_message"));
+		receipt.setCmid((String) j.get("cmid"));
 		return receipt;
 	}
 
-	public void report(Receipt receipt) {
-		MessageSender.report(null);
+	public Receipt report(Receipt receipt) {
+		// cmid는 1개씩 보내야 함
+		JSONObject jResult = new JSONObject(MessageSender.report(receipt.getCmid()).getBody().toString());
+		System.out.println(MessageSender.report(receipt.getCmid()).getBody().toString());
+		// dest_phone, call_status, report_time, umid, dest_name
+		return receipt;
 	}
 
 }

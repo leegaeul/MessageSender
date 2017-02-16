@@ -37,7 +37,7 @@ public abstract class MessageSender {
 
 	public static HttpResponse report(String cmid) {
 		// url -> http://api.openapi.io/ppurio/version/message/report/id;
-		String url = " http://api.openapi.io/ppurio/version/message/report/id";
+		String url = " http://api.openapi.io/ppurio/1/message/report/" + MessageConstants.USER_ID;;
 		HttpResponse res = null;
 		try {
 			res = Unirest.get(url).header("x-waple-authorization", MessageConstants.KEY).queryString("cmid", cmid)
